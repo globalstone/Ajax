@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="EUC-KR">
+	
+	<script type="text/javascript">
+	
+		//=======================================================//
+		// XMLHttpRequest Object GET
+		var request = null;
+		
+		function createRequest(){
+			try{
+				request = new XMLHttpRequest();
+				//Debug..
+				alert ("XMLHttpRequest() 로 request instancet생성완료");
+			}catch(trymicrosoft){
+				try{
+					request = new ActiveXObject("Msxml2.XMLHTTP");
+					//Debug..
+					alert ("ActiveXObject(Msxml2.XMLHTTP) 로 request instancet생성완료");
+				}catch(othermicrosoft){
+					try{
+						request =new ActiveXObject("Microsoft.XMLHTTP");
+						//Debug..
+						alert ("new ActiveXObject(Microsoft.XMLHTTP) 로 request instancet생성완료");
+					}catch(failed){
+						request = null;
+					}
+				}
+			}
+			
+			if( request == null ){
+				alert ("request객체 생성시 error 발생함.");
+			}
+		}
+		
+		function getSold() {
+			
+			createRequest();
+			
+			var url = "calcServerAjax.jsp"
+			
+// 			request.open("GET",url,true);
+// 			treu 일 경우 : 비동
+// 			1. requeset.readState console 출력 후
+// 			updatePage() console 4번:비동기임으로 client가 4번 받음 
+// 			2. request.readState console
+// 			3. request.readState console
+// 			4. request.readState console
+
+			request.open("GET",url,false);
+// 			1.request.readState console
+// 			updatePage() console 1회 : 동기임으로 client가 1번 받음
+// 			2. request.readState console
+// 			3. request.readState console
+// 			4. request.readState console
+
+// 			send() 호출전 아래의 속성을 지정 : CallBackFunction 지정
+			request.onreadystatechange = updatePage;
+			
+			//==> 아래 4개의 console 확인 
+			//==> onreadystatchange 는 4EA의 ready상태를 갖는다.
+			//==> 1 : 요청이 초기화된 상태 (open()호출 send() 미호출)
+			//==> 2 : server에 요청이 시작된 상태 (send()호출 server에 data 미도착)
+			//==> 3:  server에서 요청 처리가 종료된 상태 (server의 요청처리 거의 종료, data일부 client에 도착)
+			//==> 4:  server에서 요청 처리가 client로 온 상태 (server에서 전송된 datark client에 도착완료상태)
+			
+			console.log("-=>1.request.readyState = " + request.readyState);
+			
+			request.send(null);
+			console.log("==>2.request.readyState = " +request.readyState);
+			console.log("==>3.request.readyState = "+request.readyState);
+			console.log("==>4.request.readyState = "+request.readyState);
+		}
+			function updatePage() {
+				//==> 1 : 요청이 초기화된 상태 (open()호출 send() 미호출)
+				//==> 2 : server에 요청이 시작된 상태 (send()호출 server에 data 미도착)
+				//==> 3:  server에서 요청 처리가 종료된 상태 (server의 요청처리 거의 종료, data일부 client에 도착)
+				//==> 4:  server에서 요청 처리가 client로 온 상태 (server에서 전송된 datark client에 도착완료상태)
+		 		console.log("====>updatePage() : "+request.readyState);
+			}
+	</script>
+</head>
+
+<body>
+<h1> 판매 보고서</h1>
+
+	<table>
+		<tr>
+			<th>판매된 상품 갯수</th>
+			<td><span id="sold">100</span></td>
+		</tr>
+		<tr>
+			<th>상품 단가</th>
+			<td><span id="price">100</span>원</td>
+		</tr>
+	</table>
+	
+	<h2>총 매출금액  : <span id="cash">100,00원</span></h2>
+	
+	<form  method="POST" action="calcServerNormal.jsp">
+		<input type="submit" value="판매보고서 다시보기(기존방식)">
+	</form>
+	
+	<form>
+		<input type="button" value="판매보고서 다시보기(ajax적용)"  onClick="javascript:getSold()">
+	</form>
+
+</body>
+</html>
