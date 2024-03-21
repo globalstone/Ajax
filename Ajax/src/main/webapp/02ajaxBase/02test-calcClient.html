@@ -39,7 +39,9 @@
 			
 			createRequest();
 			
-			var url = "calcServerAjax.jsp"
+			var url = "calcSrverAjax.jsp"
+// 			잘못된 url
+// 			var url = "a.jsp"
 			
 			request.open("GET",url,true);
 // 			treu 일 경우 : 비동
@@ -66,19 +68,17 @@
 			//==> 3:  server에서 요청 처리가 종료된 상태 (server의 요청처리 거의 종료, data일부 client에 도착)
 			//==> 4:  server에서 요청 처리가 client로 온 상태 (server에서 전송된 datark client에 도착완료상태)
 			
-			console.log("-=>1.request.readyState = " + request.readyState);
-			
 			request.send(null);
-			console.log("==>2.request.readyState = " +request.readyState);
-			console.log("==>3.request.readyState = "+request.readyState);
-			console.log("==>4.request.readyState = "+request.readyState);
 		}
 			function updatePage() {
-				//==> 1 : 요청이 초기화된 상태 (open()호출 send() 미호출)
-				//==> 2 : server에 요청이 시작된 상태 (send()호출 server에 data 미도착)
-				//==> 3:  server에서 요청 처리가 종료된 상태 (server의 요청처리 거의 종료, data일부 client에 도착)
-				//==> 4:  server에서 요청 처리가 client로 온 상태 (server에서 전송된 datark client에 도착완료상태)
-		 		console.log("====>updatePage() : "+request.readyState);
+				if(request.readyState == 4) {
+					alert("--> 01. updatePage()");
+					
+					var value = request.responseText;
+					
+					alert("--> 02. updatePage() = " + value);
+					alert("--> 03. updatePage() :: http satus code " + request.status);
+				}
 			}
 	</script>
 </head>
