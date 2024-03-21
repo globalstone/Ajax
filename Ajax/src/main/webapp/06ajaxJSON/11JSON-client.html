@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>타이틀</title>
+	<script type="text/javascript" src="/Ajax/10common/logUtil03.js"></script>
+	<script type="text/javascript" src="/Ajax/10common/ajaxUtil02.js"></script>
+	<script type="text/javascript">
+	
+	function displayLog() {
+		createRequest();
+		
+// 		var url = "JSON-server-string.jsp";
+		var url = "JSON-server-object.jsp";
+		
+		var queryString = null;
+		openSendRequest(url,"GET",queryString,updatePage);
+	}
+	
+	function updatePage() {
+		
+		if(request.readyState == 4) {
+			
+			if(request.status == 200) {
+				
+				var serverData = request.responseText;
+				alert("JSONData : " + serverData);
+				
+// 				var JSONData = eval("("+serverData+")");
+				var JSONData = JSON.parse(serverData);
+
+				alert("JSONData : " + JSONData);
+				
+				log("3.test03.aaa : " + JSONData.aaa);
+				log("3.test03.ccc[0] : " + JSONData.ccc[0]);
+				log("3.test03.ccc[2] : " + JSONData.ccc[2]);
+			}else{
+				alert("error" + request.status);
+			}
+		}
+	}
+	</script>
+</head>
+<body>
+	<input type = "button" value = "JSON Data 접근" onClick = "javascript:displayLog()">
+	
+	<div id = "console" style = "border : 3px solid #F00">
+		log 출력 : <br/>
+	</div> 
+</body>
+</html>
