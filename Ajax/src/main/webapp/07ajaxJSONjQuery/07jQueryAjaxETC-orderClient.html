@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="EUC-KR">
+	
+	<!-- CDN(Content Delivery Network) 호스트 사용 -->
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<!--	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// jQuery framework 에서 지원 하는 ajax 사용으로 주석처리
+	<script type="text/javascript" src="/Ajax/10common/ajaxUtil02.js"></script>
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<script type="text/javascript">
+	
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	[[아래의 각각의 html 비교]]
+	■ 05postjQueryJSON-orderClient.html 
+		==> javascript + jQuery + ajax +JSON 사용
+	■ 06jQueryAjaxJSON-orderClient.html
+		==>  jQuery Framework 에서 지원하는 ajax 사용		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+		
+		//server로 Post 방식 request
+		function user_ajax_opetion(){
+			
+			$.ajax(
+				{
+					url : "postJSON-orderServer.jsp",
+					method : "POST",
+					data : {
+						name : $("#name").val(),
+						phone : $("#phone").val()
+					},
+					dataType : "json",
+					success : function(JSONData, status){
+						alert(status);						
+						alert("JSONData : \n" + JSONData);
+						
+						var displayValue = "이름 : " + JSONData.name + "\n전화 : " + JSONData.phone + "\n주소 : " + JSONData.address;
+						$("#address").val(displayValue);
+					}
+				});
+		}
+		
+		function use_ajax_url_option(){	
+			
+			alert("user_ajax_url_option()");
+			$.ajax( "postJSON-orderServer.jsp",
+				{
+					method : "POST",
+					data : {
+						name : $("#name").val(),
+						phone : $("#phone").val()
+					},
+					dataType : "json",
+					success : function(JSONData, status){
+						alert(status);
+						alert("Server에서 받은 내용 : \n" + JSONData);
+						alert("JSONData : \n" + JSONData);
+					
+						var displayValue = "이름 : " + JSONData.name + "\n전화 : " + JSONData.phone + "\n주소 : " + JSONData.address;
+						$("#address").val(displayValue);
+					}//end of call back function
+			}//end of option(key=value)
+			);//end of $.ajax()		
+		}//end of function
+		
+		function use_getJSON(){
+			
+			alert("use_getJSON");
+			
+			$.get_JSON("postJSON-orderSever.jsp",
+				{
+					name : $("#name").val(),
+					phone : $("#phone").val()
+				},
+				function(JSONData, status){
+					alert(status);						
+					alert("JSONData : \n" + JSONData);
+					
+					var displayValue = "이름 : " + JSONData.name + "\n전화 : " + JSONData.phone + "\n주소 : " + JSONData.address;
+					$("#address").val(displayValue);
+				}
+			);
+		}
+		
+	function use_post(){
+			
+			alert("use_post()");
+			
+			$.post("postJSON-orderSever.jsp",
+				{
+					name : $("#name").val(),
+					phone : $("#phone").val()
+				},
+					function(JSONData, status){
+					alert(status);						
+					alert("JSONData : \n" + JSONData);
+					
+					var displayValue = "이름 : " + JSONData.name + "\n전화 : " + JSONData.phone + "\n주소 : " + JSONData.address;
+					$("#address").val(displayValue);
+				}
+			);
+		}
+		
+	function user_get(){
+		
+		alert("use_post()");
+		
+		$.post("postJSON-orderSever.jsp",
+			{
+				name : $("#name").val(),
+				phone : $("#phone").val()
+			},
+				function(JSONData, status){
+				alert(status);						
+				alert("JSONData : \n" + serverData);
+				
+				var JSONData = $.parseJSON(serverData);
+				
+				var displayValue = "이름 : " + JSONData.name + "\n전화 : " + JSONData.phone + "\n주소 : " + JSONData.address;
+				$("#address").val(displayValue);
+			}
+		);
+	}
+	
+		$(function(){
+			$("textarea").on("click",function(){
+// 				alert("Test01 : getCustomerInfo01()");
+// 				getCustomerInfo01();
+				
+				alert("Test02 : getCustomerInfo02()");
+				getCustomerInfo02();
+			});
+			
+			$("form")[0].reset();
+		});
+	
+	</script>
+		 
+</head>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<body onload="document.forms[0].reset()">
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<body>
+	
+	<form>
+	
+		<p>이 &nbsp;&nbsp;&nbsp;&nbsp; 름  :  
+				<input type="text" size="14" name="name"  id ="name"/>
+		</p>
+		
+		<p>전화번호 :  
+				<input type="text" size="14" name="phone"  id="phone"/>
+		</p>
+	
+		<p>주 &nbsp;&nbsp;&nbsp;&nbsp; 소 : </p>  
+	
+		<p>
+			<!-- ///d//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			<textarea 	rows="3" cols="50" name="address" id="address" 
+								onclick="javascript:getCustomerInfo()" >이름을 입력후 :: 여기에click...</textarea>
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->	
+			<textarea 	rows="3" cols="50" name="address" id="address" >이름을 입력후 :: 여기에click...</textarea>
+		</p>
+				
+		<p id="testInnerHtml">XXX<input type="submit" value="주문하기" id="submit"/>YYY</p>
+		
+	</form>
+	
+</body>
+
+</html>
